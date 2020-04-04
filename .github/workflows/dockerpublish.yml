@@ -18,6 +18,7 @@ jobs:
       PYTHON_VERSION: ${{ matrix.PYTHON_VERSION }}
       UBUNTU_VERSION: ${{ matrix.UBUNTU_VERSION }}
       VERSION: ${{ matrix.PYTHON_VERSION }}_${{ matrix.UBUNTU_VERSION }}
+      TARGET: docker.pkg.github.com/${{ github.repository }}:${{ env.VERSION }}
 
     steps:
       - uses: jungwinter/split@v1
@@ -36,5 +37,8 @@ jobs:
 
       - name: Push image
         run: |
-          echo Pushing to: docker.pkg.github.com/${{ github.repository }}:${{ env.VERSION }}
-          docker push docker.pkg.github.com/${{ github.repository }}:${{ env.VERSION }}
+          # Change all uppercase to lowercase
+          LOWERCASE_TARGET = $(echo ${{ env.TARGET }} | tr '[A-Z]' '[a-z]')
+
+          echo Pushing to: $LOWERCASE_TARGET
+          docker push $LOWERCASE_TARGET

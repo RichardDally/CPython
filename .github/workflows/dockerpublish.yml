@@ -21,7 +21,7 @@ jobs:
       PYTHON_MINOR: ${{ matrix.PYTHON_MINOR }}
       PYTHON_MICRO: ${{ matrix.PYTHON_MICRO }}
       UBUNTU_VERSION: ${{ matrix.UBUNTU_VERSION }}
-      VERSION: ${{ env.PYTHON_MAJOR }}.${{ env.PYTHON_MINOR }}.${{ env.PYTHON_MICRO }}_${{ env.UBUNTU_VERSION }}
+      VERSION: ${{ matrix.PYTHON_MAJOR }}.${{ matrix.PYTHON_MINOR }}.${{ matrix.PYTHON_MICRO }}_${{ matrix.UBUNTU_VERSION }}
 
     steps:
       - uses: actions/checkout@v2

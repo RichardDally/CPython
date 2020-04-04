@@ -6,15 +6,15 @@ on:
     branches:
       - master
 
-env:
-  PYTHON_MAJOR: 3
-  PYTHON_MINOR: 8
-  PYTHON_MICRO: 2
-  UBUNTU_VERSION: 18.04
-  IMAGE_NAME: cpython
-  VERSION: ${PYTHON_MAJOR}.${PYTHON_MINOR}.${PYTHON_MICRO}_${UBUNTU_VERSION}
-
 jobs:
+  env:
+    PYTHON_MAJOR: 3
+    PYTHON_MINOR: 8
+    PYTHON_MICRO: 2
+    UBUNTU_VERSION: 18.04
+    IMAGE_NAME: cpython
+    VERSION: ${PYTHON_MAJOR}.${PYTHON_MINOR}.${PYTHON_MICRO}_${UBUNTU_VERSION}
+
   push:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'

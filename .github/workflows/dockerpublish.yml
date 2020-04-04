@@ -18,7 +18,7 @@ jobs:
       PYTHON_VERSION: ${{ matrix.PYTHON_VERSION }}
       UBUNTU_VERSION: ${{ matrix.UBUNTU_VERSION }}
       VERSION: ${{ matrix.PYTHON_VERSION }}_${{ matrix.UBUNTU_VERSION }}
-      TARGET: docker.pkg.github.com/${{ github.repository }}:${{ env.VERSION }}
+      TARGET: docker.pkg.github.com/${{ github.repository }}:${{ matrix.VERSION }}
 
     steps:
       - uses: jungwinter/split@v1

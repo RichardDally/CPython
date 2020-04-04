@@ -11,30 +11,33 @@ jobs:
     if: github.event_name == 'push'
     strategy:
       matrix:
-        PYTHON_MAJOR: [3]
-        PYTHON_MINOR: [8]
-        PYTHON_MICRO: [2]
+        PYTHON_VERSION: [3.8.2]
         UBUNTU_VERSION: [18.04]
     env:
       IMAGE_NAME: cpython
-      PYTHON_MAJOR: ${{ matrix.PYTHON_MAJOR }}
-      PYTHON_MINOR: ${{ matrix.PYTHON_MINOR }}
-      PYTHON_MICRO: ${{ matrix.PYTHON_MICRO }}
+      PYTHON_VERSION: ${{ matrix.PYTHON_VERSION }}
       UBUNTU_VERSION: ${{ matrix.UBUNTU_VERSION }}
-      VERSION: ${{ matrix.PYTHON_MAJOR }}.${{ matrix.PYTHON_MINOR }}.${{ matrix.PYTHON_MICRO }}_${{ matrix.UBUNTU_VERSION }}
+      VERSION: ${{ matrix.PYTHON_VERSION }}_${{ matrix.UBUNTU_VERSION }}
 
     steps:
       - uses: actions/checkout@v2
 
+      - uses: jungwinter/split@v1
+          id: split
+          with:
+            msg: ${{ env.PYTHON_VERSION }}
+            seperator: '.'
+            maxsplit: 3
+
       - name: Build image
-        run: docker build . --tag richarddally/${{ env.IMAGE_NAME }}:${{ env.VERSION }} --build-arg PYTHON_MAJOR=${{ env.PYTHON_MAJOR }} --build-arg PYTHON_MINOR=${{ env.PYTHON_MINOR }} --build-arg PYTHON_MICRO=${{ env.PYTHON_MICRO }}
+        run: docker build . --tag richarddally/${{ env.IMAGE_NAME }}:${{ env.VERSION }} --build-arg PYTHON_MAJOR=${{ steps.split.outputs._0 }} --build-arg PYTHON_MINOR=${{ steps.split.outputs._1 }} --build-arg PYTHON_MICRO=${{ steps.split.outputs._2 }}
 
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
 
       - name: Push image
         run: |
-          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}
 
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')

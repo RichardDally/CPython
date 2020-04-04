@@ -2,33 +2,35 @@ name: Docker
 
 on:
   push:
-    # Publish `master` as Docker `latest` image.
     branches:
       - master
 
 jobs:
-  env:
-    PYTHON_MAJOR: 3
-    PYTHON_MINOR: 8
-    PYTHON_MICRO: 2
-    UBUNTU_VERSION: 18.04
-    IMAGE_NAME: cpython
-    VERSION: ${PYTHON_MAJOR}.${PYTHON_MINOR}.${PYTHON_MICRO}_${UBUNTU_VERSION}
-
   push:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
+    strategy:
+      matrix:
+        PYTHON_MAJOR: [3]
+        PYTHON_MINOR: [8]
+        PYTHON_MICRO: [2]
+        UBUNTU_VERSION: [18.04]
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Build image
+        env:
+          VERSION: ${PYTHON_MAJOR}.${PYTHON_MINOR}.${PYTHON_MICRO}_${UBUNTU_VERSION}
         run: docker build . --file Dockerfile --tag richarddally/cpython:${VERSION} --build-arg PYTHON_MAJOR=${PYTHON_MAJOR} --build-arg PYTHON_MINOR=${PYTHON_MINOR} --build-arg PYTHON_MICRO=${PYTHON_MICRO}
 
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
 
       - name: Push image
+        env:
+          IMAGE_NAME: cpython
+          VERSION: ${PYTHON_MAJOR}.${PYTHON_MINOR}.${PYTHON_MICRO}_${UBUNTU_VERSION}
         run: |
           IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
 

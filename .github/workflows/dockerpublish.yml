@@ -12,7 +12,7 @@ env:
   PYTHON_MICRO: 2
   UBUNTU_VERSION: 18.04
   IMAGE_NAME: cpython
-  VERSION: $PYTHON_MAJOR.$PYTHON_MINOR.$PYTHON_MICRO_$UBUNTU_VERSION
+  VERSION: ${PYTHON_MAJOR}.${PYTHON_MINOR}.${PYTHON_MICRO}_${UBUNTU_VERSION}
 
 jobs:
   push:
@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build image
-        run: docker build . --file Dockerfile --tag richarddally/cpython:$VERSION --build-arg PYTHON_MAJOR=$PYTHON_MAJOR --build-arg PYTHON_MINOR=$PYTHON_MINOR --build-arg PYTHON_MICRO=$PYTHON_MICRO
+        run: docker build . --file Dockerfile --tag richarddally/cpython:${VERSION} --build-arg PYTHON_MAJOR=${PYTHON_MAJOR} --build-arg PYTHON_MINOR=${PYTHON_MINOR} --build-arg PYTHON_MICRO=${PYTHON_MICRO}
 
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin

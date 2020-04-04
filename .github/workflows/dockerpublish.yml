@@ -12,7 +12,7 @@ env:
   PYTHON_MICRO: 2
   UBUNTU_VERSION: 18.04
   IMAGE_NAME: cpython
-  VERSION: "$PYTHON_MAJOR.$PYTHON_MINOR.$PYTHON_MICRO_$UBUNTU_VERSION"
+  VERSION: $PYTHON_MAJOR.$PYTHON_MINOR.$PYTHON_MICRO_$UBUNTU_VERSION
 
 jobs:
   push:
@@ -31,7 +31,7 @@ jobs:
       - name: Push image
         run: |
           IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
-          
+
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
 

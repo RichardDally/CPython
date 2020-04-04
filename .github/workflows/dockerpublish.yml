@@ -21,10 +21,10 @@ jobs:
 
     steps:
       - uses: jungwinter/split@v1
-          id: python
-          with:
-            msg: ${{ env.PYTHON_VERSION }}
-            seperator: '.'
+        id: split
+        with:
+          msg: ${{ env.PYTHON_VERSION }}
+          seperator: '.'
 
       - uses: actions/checkout@v2
 

@@ -15,22 +15,24 @@ jobs:
         PYTHON_MINOR: [8]
         PYTHON_MICRO: [2]
         UBUNTU_VERSION: [18.04]
+    env:
+      IMAGE_NAME: cpython
+      PYTHON_MAJOR: ${{ matrix.PYTHON_MAJOR }}
+      PYTHON_MINOR: ${{ matrix.PYTHON_MINOR }}
+      PYTHON_MICRO: ${{ matrix.PYTHON_MICRO }}
+      UBUNTU_VERSION: ${{ matrix.UBUNTU_VERSION }}
+      VERSION: ${{ env.PYTHON_MAJOR }}.${{ env.PYTHON_MINOR }}.${{ env.PYTHON_MICRO }}_${{ env.UBUNTU_VERSION }}
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Build image
-        env:
-          VERSION: ${PYTHON_MAJOR}.${PYTHON_MINOR}.${PYTHON_MICRO}_${UBUNTU_VERSION}
-        run: docker build . --file Dockerfile --tag richarddally/cpython:${VERSION} --build-arg PYTHON_MAJOR=${PYTHON_MAJOR} --build-arg PYTHON_MINOR=${PYTHON_MINOR} --build-arg PYTHON_MICRO=${PYTHON_MICRO}
+        run: docker build . --tag richarddally/${{ env.IMAGE_NAME }}:${{ env.VERSION }} --build-arg PYTHON_MAJOR=${{ env.PYTHON_MAJOR }} --build-arg PYTHON_MINOR=${{ env.PYTHON_MINOR }} --build-arg PYTHON_MICRO=${{ env.PYTHON_MICRO }}
 
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
 
       - name: Push image
-        env:
-          IMAGE_NAME: cpython
-          VERSION: ${PYTHON_MAJOR}.${PYTHON_MINOR}.${PYTHON_MICRO}_${UBUNTU_VERSION}
         run: |
           IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
 
@@ -38,7 +40,7 @@ jobs:
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
 
           echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
+          echo ${{ env.VERSION }}
 
-          docker tag image $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
+          docker tag image $IMAGE_ID:${{ env.VERSION }}
+          docker push $IMAGE_ID:${{ env.VERSION }}

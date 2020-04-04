@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build image
-        run: docker build . --tag richarddally/${{ env.IMAGE_NAME }}:${{ env.VERSION }} --build-arg PYTHON_MAJOR=${{ steps.split.outputs._0 }} --build-arg PYTHON_MINOR=${{ steps.split.outputs._1 }} --build-arg PYTHON_MICRO=${{ steps.split.outputs._2 }}
+        run: docker build . --name ${{ env.VERSION }} --tag richarddally/${{ env.IMAGE_NAME }}:${{ env.VERSION }} --build-arg PYTHON_MAJOR=${{ steps.split.outputs._0 }} --build-arg PYTHON_MINOR=${{ steps.split.outputs._1 }} --build-arg PYTHON_MICRO=${{ steps.split.outputs._2 }}
 
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
@@ -41,5 +41,5 @@ jobs:
           LOWERCASE_TARGET=$(echo ${{ env.TARGET }} | tr '[A-Z]' '[a-z]')
 
           echo Pushing to: $LOWERCASE_TARGET
-          docker tag richarddally/cpython::${{ env.VERSION }} $LOWERCASE_TARGET
+          docker tag ${{ env.VERSION }} $LOWERCASE_TARGET
           docker push $LOWERCASE_TARGET

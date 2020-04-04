@@ -30,14 +30,13 @@ jobs:
 
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.io -u ${{ github.actor }} --password-stdin
-#        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+        #run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
 
       - name: Build image
         run: docker build . --tag richarddally/cpython:${{ env.VERSION }} --build-arg PYTHON_MAJOR=${{ steps.split.outputs._0 }} --build-arg PYTHON_MINOR=${{ steps.split.outputs._1 }} --build-arg PYTHON_MICRO=${{ steps.split.outputs._2 }}
 
       - name: Push image
         run: |
-#          echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
           echo Pushing to: richarddally/cpython:${{ env.VERSION }}
           docker tag richarddally/cpython:${{ env.VERSION }} richarddally/cpython:${{ env.VERSION }}
           docker push richarddally/cpython

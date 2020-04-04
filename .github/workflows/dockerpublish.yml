@@ -11,7 +11,7 @@ jobs:
     if: github.event_name == 'push'
     strategy:
       matrix:
-        PYTHON_VERSION: [3.8.2, 3.7.7]
+        PYTHON_VERSION: [3.8.2, 3.7.7, 3.6.10]
         UBUNTU_VERSION: [18.04]
     env:
       IMAGE_NAME: cpython

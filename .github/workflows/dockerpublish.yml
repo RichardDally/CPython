@@ -38,7 +38,7 @@ jobs:
       - name: Push image
         run: |
           # Change all uppercase to lowercase
-          LOWERCASE_TARGET = $(echo ${{ env.TARGET }} | tr '[A-Z]' '[a-z]')
+          LOWERCASE_TARGET=$(echo ${{ env.TARGET }} | tr '[A-Z]' '[a-z]')
 
           echo Pushing to: $LOWERCASE_TARGET
           docker push $LOWERCASE_TARGET

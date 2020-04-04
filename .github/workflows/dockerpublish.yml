@@ -41,4 +41,5 @@ jobs:
           LOWERCASE_TARGET=$(echo ${{ env.TARGET }} | tr '[A-Z]' '[a-z]')
 
           echo Pushing to: $LOWERCASE_TARGET
+          docker tag $LOWERCASE_TARGET
           docker push $LOWERCASE_TARGET

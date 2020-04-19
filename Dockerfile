@@ -38,9 +38,9 @@ RUN apt-get install -y --no-install-recommends \
     libreadline-dev \
     libffi-dev
 
-ARG PYTHON_MAJOR
-ARG PYTHON_MINOR
-ARG PYTHON_MICRO
+ARG PYTHON_MAJOR=3
+ARG PYTHON_MINOR=8
+ARG PYTHON_MICRO=2
 ENV PYTHON_VERSION=${PYTHON_MAJOR}.${PYTHON_MINOR}.${PYTHON_MICRO}
 
 RUN echo "Building CPython ${PYTHON_VERSION}"

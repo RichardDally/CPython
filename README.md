@@ -2,7 +2,7 @@
 
 Build CPython 3 from scratch to provide a ready-to-use docker image.
 
-#### Usage
+### Usage
 
 Modify this shell code example to fit your needs.
 
@@ -26,3 +26,12 @@ sed -i "s/FROM ubuntu:18.04/FROM ubuntu:$UBUNTU_VERSION/g" Dockerfile
 
 docker build . -t richarddally/cpython:$PYTHON_MAJOR.$PYTHON_MINOR.$PYTHON_MICRO --build-arg PYTHON_MAJOR=$PYTHON_MAJOR --build-arg PYTHON_MINOR=$PYTHON_MINOR --build-arg PYTHON_MICRO=$PYTHON_MICRO"
 ```
+
+### Docker Hub
+
+[DockerHub infrastructure](https://hub.docker.com/r/richarddally/cpython) is automatically building branches (combination of CPython and Ubuntu versions).
+
+
+### Pull Requests
+
+Pull requests are welcome if you need a new version or propose Docker image improvement.

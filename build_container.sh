@@ -2,8 +2,8 @@
 
 # Pick a version from https://www.python.org/ftp/python/
 PYTHON_MAJOR=3
-PYTHON_MINOR=7
-PYTHON_MICRO=6
+PYTHON_MINOR=8
+PYTHON_MICRO=2
 
 # Pick a tag from https://hub.docker.com/_/ubuntu?tab=description
 UBUNTU_VERSION=18.09

@@ -1,10 +1,8 @@
-FROM ubuntu:23.10
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
 
-ARG PYTHON_MAJOR=3
-ARG PYTHON_MINOR=12
-ARG PYTHON_MICRO=1
+ARG PYTHON_VERSION
 
-ENV PYTHON_VERSION=${PYTHON_MAJOR}.${PYTHON_MINOR}.${PYTHON_MICRO}
 ENV PYTHON_BINARY=python${PYTHON_MAJOR}.${PYTHON_MINOR}
 ENV PYTHON_ARCHIVE_DIRECTORY=Python-${PYTHON_VERSION}
 ENV PYTHON_ARCHIVE_FILENAME=${PYTHON_ARCHIVE_DIRECTORY}.tgz
@@ -48,17 +46,17 @@ RUN apt-get update -qq && \
     libssl-dev \
     libreadline-dev \
     libffi-dev && \
-    echo "Building CPython ${PYTHON_VERSION}" && \
+    echo "Preparing CPython ${PYTHON_VERSION}" && \
     mkdir --parents ${ARCHIVES_DIRECTORY} && \
     wget --quiet ${PYTHON_ARCHIVE_URL} --directory ${ARCHIVES_DIRECTORY} && \
     tar --extract --file ${ARCHIVES_DIRECTORY}/${PYTHON_ARCHIVE_FILENAME} --directory ${ARCHIVES_DIRECTORY} && \
+    echo "Compiling CPython ${PYTHON_VERSION} with `nproc` cores" && \
     cd ${EXTRACT_DIRECTORY} && ./configure --enable-optimizations --with-lto && \
     cd ${EXTRACT_DIRECTORY} && make --jobs `nproc` && \
     cd ${EXTRACT_DIRECTORY} && make altinstall && \
     echo "Reset default python3 symbolic link" && \
-    unlink /usr/bin/python3 && \
     ln -sv /usr/local/bin/${PYTHON_BINARY} /usr/bin/python3 && \
+    echo "Cleanup archives" && \
+    rm -rf ${ARCHIVES_DIRECTORY} && \
     echo "Remove shebang from /usr/bin/lsb_release to unblock pip (c.f. https://stackoverflow.com/q/44967202/5037799)" && \
-    sed -i 1d /usr/bin/lsb_release && \
-    echo "Update Python 3 essential modules" && \
-    python3 -m pip install -U pip setuptools
+    sed -i 1d /usr/bin/lsb_release

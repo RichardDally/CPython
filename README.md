@@ -1,20 +1,14 @@
-# CPython docker image
+# CPython Docker image
 
 Build CPython 3 from scratch to provide a ready-to-use Docker image (based on Ubuntu image).
 
+## GitHub automatic build
 
-### Docker Hub
+Read [build.yaml](.github/workflows/build.yaml)
 
-[DockerHub infrastructure](https://hub.docker.com/r/richarddally/cpython) is automatically building branches (combination of CPython and Ubuntu versions).
+## Docker Hub
 
-
-### Pull Requests
-
-Pull requests are welcomed if you need a new version or propose Docker image improvement.
-1. `README.md` is modified only in `master` branch.
-2. Create a new branch with following nomenclature PYTHONVERSION_UBUNTUVERSION (e.g. 3.8.2_20.04)
-3. Modify Dockerfile to change Ubuntu version and PYTHON major/minor/micro versions.
-4. Submit your pull request for approval.
+[DockerHub](https://hub.docker.com/r/richarddally/cpython) stores all Docker images built by GitHub infra.
 
 ### Build a custom version
 
@@ -23,20 +17,12 @@ Modify this shell code example to build your own CPython image.
 ```shell script
 #!/bin/bash
 
-# Pick a version from https://www.python.org/ftp/python/
-PYTHON_MAJOR=3
-PYTHON_MINOR=8
-PYTHON_MICRO=2
-
 # Pick a tag from https://hub.docker.com/_/ubuntu?tab=description
-UBUNTU_VERSION=18.04
+UBUNTU_VERSION=23.10
 
-PYTHON_VERSION=$PYTHON_MAJOR.$PYTHON_MINOR.$PYTHON_MICRO
-VERSION=$PYTHON_VERSION\_$UBUNTU_VERSION
+# Pick a version from https://www.python.org/ftp/python/
+PYTHON_VERSION=3.13.0
 
-echo Building CPython $PYTHON_VERSION based on Ubuntu $VERSION
-
-sed -i "s/FROM ubuntu:18.04/FROM ubuntu:$UBUNTU_VERSION/g" Dockerfile
-
-docker build . -t richarddally/cpython:$PYTHON_MAJOR.$PYTHON_MINOR.$PYTHON_MICRO --build-arg PYTHON_MAJOR=$PYTHON_MAJOR --build-arg PYTHON_MINOR=$PYTHON_MINOR --build-arg PYTHON_MICRO=$PYTHON_MICRO"
+echo "Building CPython ${PYTHON_VERSION} based on Ubuntu ${UBUNTU_VERSION}"
+docker build . -t richarddally/cpython:${PYTHON_VERSION} --build-arg BASE_IMAGE=${UBUNTU_VERSION} --build-arg PYTHON_VERSION=${PYTHON_VERSION}
 ```

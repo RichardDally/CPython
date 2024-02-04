@@ -4,7 +4,29 @@ on:
   workflow_dispatch:
 
 jobs:
+  Parse:
+    if: true
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Parse semver string
+        id: semver_parser
+        uses: booxmedialtd/ws-action-parse-semver@v1
+        with:
+          input_string: '3.13.0a1'
+          version_extractor_regex: '\/(.*)$'
+      -
+        name: Use parsed semver
+        run: |
+            echo "v${{ steps.semver_parser.outputs.major }}"
+            echo "v${{ steps.semver_parser.outputs.minor }}"
+            echo "v${{ steps.semver_parser.outputs.patch }}"
+            echo "v${{ steps.semver_parser.outputs.prerelease }}"
+            echo "v${{ steps.semver_parser.outputs.build }}"
+            echo "v${{ steps.semver_parser.outputs.fullversion }}"
+
   docker_build_push:
+    if: false
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true

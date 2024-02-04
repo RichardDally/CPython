@@ -24,5 +24,5 @@ UBUNTU_VERSION=23.10
 PYTHON_VERSION=3.13.0
 
 echo "Building CPython ${PYTHON_VERSION} based on Ubuntu ${UBUNTU_VERSION}"
-docker build . -t richarddally/cpython:${PYTHON_VERSION} --build-arg BASE_IMAGE=${UBUNTU_VERSION} --build-arg PYTHON_VERSION=${PYTHON_VERSION}
+docker build . -t richarddally/cpython:${PYTHON_VERSION} --build-arg BASE_IMAGE=ubuntu:${UBUNTU_VERSION} --build-arg PYTHON_VERSION=${PYTHON_VERSION}
 ```

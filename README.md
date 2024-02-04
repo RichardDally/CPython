@@ -17,10 +17,10 @@ Modify this shell code example to build your own CPython image.
 ```shell script
 #!/bin/bash
 
-# Pick a tag from https://hub.docker.com/_/ubuntu?tab=description
+# Pick a tag from https://hub.docker.com/_/ubuntu?tab=description for base image
 UBUNTU_VERSION=23.10
 
-# Pick a version from https://www.python.org/ftp/python/
+# Pick a version from https://www.python.org/ftp/python/ for interpreter version to compile
 PYTHON_VERSION=3.13.0
 
 echo "Building CPython ${PYTHON_VERSION} based on Ubuntu ${UBUNTU_VERSION}"
